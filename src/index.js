@@ -7,18 +7,27 @@ class App extends React.Component {
         // reference to the parents constructor function
         super(props);
 
+        // Only time we do direct assignment to this.state
         this.state = { lat: null };
+
+        // dont want this call in render because how much render gets called
+        window.navigator.geolocation.getCurrentPosition(
+            // successful callback
+            (position) => {
+                // we called setState
+                this.setState({ lat: position.coords.latitude });
+
+                // NEVER WANT TO DO THIS
+                // this.state.lat = position.coords.latitude
+            },
+            // failed callback
+            (error) => console.log(error)
+        );
     }
 
     // React says we have to define render!!
     render() {
-        window.navigator.geolocation.getCurrentPosition(
-            // successful callback
-            (position) => console.log(position),
-            // failed callback
-            (error) => console.log(error)
-        );
-        return <div>Latitude: </div>
+        return <div>Latitude: {this.state.lat}</div>
     }
 }
 
