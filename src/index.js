@@ -8,7 +8,7 @@ class App extends React.Component {
         super(props);
 
         // Only time we do direct assignment to this.state
-        this.state = { lat: null };
+        this.state = { lat: null, errorMessage: '' };
 
         // dont want this call in render because how much render gets called
         window.navigator.geolocation.getCurrentPosition(
@@ -21,13 +21,21 @@ class App extends React.Component {
                 // this.state.lat = position.coords.latitude
             },
             // failed callback
-            (error) => console.log(error)
+            (error) => {
+                this.setState({ errorMessage: error.message });
+            }
         );
     }
 
     // React says we have to define render!!
     render() {
-        return <div>Latitude: {this.state.lat}</div>
+        return (
+            <div>
+                Latitude: {this.state.lat}
+                <br />
+                Error: {this.state.errorMessage}
+            </div>
+        );
     }
 }
 
