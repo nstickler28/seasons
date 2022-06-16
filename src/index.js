@@ -9,23 +9,27 @@ class App extends React.Component {
 
         // Only time we do direct assignment to this.state
         this.state = { lat: null, errorMessage: '' };
+    }
 
+    // lifecycle method
+    componentDidMount() {
         // dont want this call in render because how much render gets called
         window.navigator.geolocation.getCurrentPosition(
             // successful callback
-            (position) => {
-                // we called setState
-                this.setState({ lat: position.coords.latitude });
+            (position) => this.setState({ lat: position.coords.latitude }),
 
-                // NEVER WANT TO DO THIS
-                // this.state.lat = position.coords.latitude
-            },
+            // NEVER WANT TO DO THIS
+            // this.state.lat = position.coords.latitude
+
             // failed callback
-            (error) => {
-                this.setState({ errorMessage: error.message });
-            }
+            (error) => this.setState({ errorMessage: error.message })
         );
     }
+
+    // // lifecycle method
+    // componentDidUpdate() {
+    //     console.log('My component was just updated - it rendered!');
+    // }
 
     // React says we have to define render!!
     render() {
